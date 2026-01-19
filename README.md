@@ -1,5 +1,5 @@
 # 3팀
-<!-- TODO: 팀 협업 문서 링크 -->
+- 팀 협업 문서 ([GitHub Wiki 링크](https://github.com/Codeit-Sprint-SB-06-03-Advanced-Project/sb06-mopl-team03/wiki))
 
 # 팀원 구성
 - 김승빈 ([GitHub 링크](https://github.com/mainlib990))
