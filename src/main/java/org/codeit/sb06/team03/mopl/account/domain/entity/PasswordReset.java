@@ -42,4 +42,12 @@ public class PasswordReset {
     @NotNull
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
+
+    public static PasswordReset create(Account account, Password tempPassword, Instant expiresAt) {
+        var passwordReset = new PasswordReset();
+        passwordReset.account = account;
+        passwordReset.tempPassword = tempPassword;
+        passwordReset.expiresAt = expiresAt;
+        return passwordReset;
+    }
 }
