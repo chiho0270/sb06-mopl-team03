@@ -43,11 +43,11 @@ public class PasswordReset {
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
 
-    public static PasswordReset create(Account account, Password tempPassword, Instant expiresAt) {
+    public static PasswordReset create(Account account, Password tempPassword) {
         var passwordReset = new PasswordReset();
         passwordReset.account = account;
         passwordReset.tempPassword = tempPassword;
-        passwordReset.expiresAt = expiresAt;
+        passwordReset.expiresAt = Instant.now().plusSeconds(60 * 3);
         return passwordReset;
     }
 }
