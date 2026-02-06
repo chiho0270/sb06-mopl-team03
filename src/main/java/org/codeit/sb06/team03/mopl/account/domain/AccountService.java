@@ -2,10 +2,13 @@ package org.codeit.sb06.team03.mopl.account.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.codeit.sb06.team03.mopl.account.domain.policy.PasswordEncryptionPolicy;
+import org.codeit.sb06.team03.mopl.account.domain.policy.TempPasswordExpiresPolicy;
 import org.codeit.sb06.team03.mopl.account.domain.policy.TempPasswordGenerationPolicy;
 import org.codeit.sb06.team03.mopl.account.domain.vo.EmailAddress;
 import org.codeit.sb06.team03.mopl.account.domain.vo.Password;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 
 @RequiredArgsConstructor
 @Service
@@ -13,6 +16,7 @@ public class AccountService {
 
     private final PasswordEncryptionPolicy passwordEncryptionPolicy;
     private final TempPasswordGenerationPolicy tempPasswordGenerationPolicy;
+    private final TempPasswordExpiresPolicy tempPasswordExpiresPolicy;
 
     public Account create(EmailAddress emailAddress, String rawPassword) {
         Password password = passwordEncryptionPolicy.apply(rawPassword);
@@ -25,6 +29,7 @@ public class AccountService {
 
     public Account resetPassword(Account account) {
         Password tempPassword = tempPasswordGenerationPolicy.generate();
-        return account.passwordReset(tempPassword);
+        Instant expriesAt = tempPasswordExpiresPolicy.getExpiresAt();
+        return account.passwordReset(tempPassword, expriesAt);
     }
 }

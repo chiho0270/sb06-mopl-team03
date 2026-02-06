@@ -7,3 +7,4 @@ mopl:
   account:
     password-policy: "no"
     temp-password-policy: "random"
+    temp-password-reset-timeout-policy: "get"
