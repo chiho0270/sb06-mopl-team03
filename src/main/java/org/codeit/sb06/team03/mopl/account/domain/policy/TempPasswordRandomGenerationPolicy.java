@@ -1,7 +1,6 @@
 package org.codeit.sb06.team03.mopl.account.domain.policy;
 
 import lombok.RequiredArgsConstructor;
-import org.codeit.sb06.team03.mopl.account.domain.vo.Password;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 /*import java.security.SecureRandom;
@@ -26,7 +25,7 @@ public class TempPasswordRandomGenerationPolicy implements TempPasswordGeneratio
     private final PasswordEncryptionPolicy encryptionPolicy;
 
     @Override
-    public Password generate() {
+    public String generate() {
         /*
           Security는 .. ? 자동 생성
            -> 이유는 보안적인 사항은 개별적으로 개발하는 것이 아닌 security에서 생성하는대로 사용하는 것.
@@ -46,6 +45,6 @@ public class TempPasswordRandomGenerationPolicy implements TempPasswordGeneratio
 
         Collections.shuffle(passwordChars);*/
         final String rawPassword = "temporary1!!";
-        return encryptionPolicy.apply(rawPassword);
+        return rawPassword;
     }
 }

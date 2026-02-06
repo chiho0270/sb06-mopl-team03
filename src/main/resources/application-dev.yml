@@ -6,5 +6,5 @@ spring:
 mopl:
   account:
     password-policy: "no"
-    temp-password-policy: "random"
-    temp-password-reset-timeout-policy: "get"
+    temp-password-policy: "fixed"
+    temp-password-reset-timeout-policy-in-minutes: 3

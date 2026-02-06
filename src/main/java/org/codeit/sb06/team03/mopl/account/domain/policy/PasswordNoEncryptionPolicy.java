@@ -10,8 +10,6 @@ public class PasswordNoEncryptionPolicy implements PasswordEncryptionPolicy {
 
     @Override
     public Password apply(String rawPassword) {
-        // TODO : security 도입 시, 아래 주석 코드 예제 참고
-        // return new Password(encrypt(rawPassword), rawPassword);
-        return new Password(rawPassword, rawPassword);
+        return new Password(rawPassword);
     }
 }
