@@ -1,7 +1,6 @@
 package org.codeit.sb06.team03.mopl.account.domain;
 
 import lombok.RequiredArgsConstructor;
-import org.codeit.sb06.team03.mopl.account.domain.entity.PasswordReset;
 import org.codeit.sb06.team03.mopl.account.domain.policy.PasswordEncryptionPolicy;
 import org.codeit.sb06.team03.mopl.account.domain.policy.TempPasswordGenerationPolicy;
 import org.codeit.sb06.team03.mopl.account.domain.vo.EmailAddress;
