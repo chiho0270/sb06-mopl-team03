@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.AccountRegisteredEvent;
 import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.PasswordResetedEvent;
+import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.RoleUpdatedEvent;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -26,7 +27,6 @@ import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.Pass
 public class Account extends AbstractAggregateRoot<Account> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -58,12 +58,21 @@ public class Account extends AbstractAggregateRoot<Account> {
 
     public static Account create(EmailAddress emailAddress, Password password) {
         var account = new Account();
+        account.id = UUID.randomUUID();
         account.emailAddress = emailAddress;
         account.password = password;
         account.role = Role.USER;
         account.locked = false;
         account.registerEvent(new AccountRegisteredEvent());
         return account;
+    }
+
+    public Account updateRole(Role role) {
+        if (this.role != role) {
+            this.role = role;
+            this.registerEvent(new RoleUpdatedEvent(role));
+        }
+        return this;
     }
 
     public Account passwordReset(Password tempPassword) {

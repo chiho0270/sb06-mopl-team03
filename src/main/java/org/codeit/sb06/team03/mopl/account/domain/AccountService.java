@@ -19,6 +19,10 @@ public class AccountService {
         return Account.create(emailAddress, password);
     }
 
+    public Account updateRole(Account account, Role role) {
+        return account.updateRole(role);
+    }
+
     public Account resetPassword(Account account) {
         Password tempPassword = tempPasswordGenerationPolicy.generate();
         return account.passwordReset(tempPassword);

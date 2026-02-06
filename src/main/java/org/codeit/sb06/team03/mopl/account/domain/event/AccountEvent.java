@@ -2,6 +2,8 @@ package org.codeit.sb06.team03.mopl.account.domain.event;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.codeit.sb06.team03.mopl.account.domain.Role;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract sealed class AccountEvent {
@@ -10,5 +12,10 @@ public abstract sealed class AccountEvent {
     }
 
     public static final class PasswordResetedEvent extends AccountEvent {
+    }
+
+    @RequiredArgsConstructor
+    public static final class RoleUpdatedEvent extends AccountEvent {
+        private final Role role;
     }
 }
