@@ -1,6 +1,7 @@
 package org.codeit.sb06.team03.mopl.account.application;
 
 import lombok.RequiredArgsConstructor;
+import org.codeit.sb06.team03.mopl.account.application.in.*;
 import org.codeit.sb06.team03.mopl.account.application.in.AssignRoleCommand;
 import org.codeit.sb06.team03.mopl.account.application.in.AssignRoleUseCase;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
-@Slf4j
-public class AccountAppService implements RegisterAccountUseCase, UpdatePasswordUseCase, AssignRoleUseCase {
+public class AccountAppService implements RegisterAccountUseCase, UpdatePasswordUseCase, AssignRoleUseCase, UpdateLockStatusUseCase {
 
     private final AccountService accountService;
     private final LoadAccountPort loadAccountPort;
@@ -91,6 +91,20 @@ public class AccountAppService implements RegisterAccountUseCase, UpdatePassword
                 .orElseThrow(() -> new AccountNotFoundException(accountUuid));
 
         Account updatedAccount = accountService.updateRole(foundAccount, role);
+
+        saveAccountPort.save(updatedAccount);
+    }
+
+    @Override
+    @Transactional
+    public void updateLocked(UUID userId, UpdateLockStatusCommand command) {
+        final UUID accountUuid = userId;
+        final boolean locked = command.locked();
+
+        Account foundAccount = loadAccountPort.findById(accountUuid)
+                .orElseThrow(() -> new AccountNotFoundException(accountUuid));
+
+        Account updatedAccount = accountService.updateLocked(foundAccount, locked);
 
         saveAccountPort.save(updatedAccount);
     }
