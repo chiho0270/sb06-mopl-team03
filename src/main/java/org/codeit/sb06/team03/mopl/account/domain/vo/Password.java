@@ -2,7 +2,6 @@ package org.codeit.sb06.team03.mopl.account.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import org.codeit.sb06.team03.mopl.account.domain.exception.InvalidPasswordException;
 
@@ -10,10 +9,7 @@ import org.codeit.sb06.team03.mopl.account.domain.exception.InvalidPasswordExcep
 public record Password(
         @NotNull
         @Column(name = "password", nullable = false)
-        String value,
-
-        @Transient
-        String rawValue
+        String value
 ) {
 
     private static final int MIN_LENGTH = 8;

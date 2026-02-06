@@ -6,6 +6,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.codeit.sb06.team03.mopl.account.domain.entity.PasswordReset;
+import org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent;
+import org.codeit.sb06.team03.mopl.account.domain.policy.PasswordEncryptionPolicy;
+import org.codeit.sb06.team03.mopl.account.domain.policy.TempPasswordGenerationPolicy;
+import org.codeit.sb06.team03.mopl.account.domain.policy.TempPasswordResetTimeoutPolicy;
 import org.codeit.sb06.team03.mopl.account.domain.vo.EmailAddress;
 import org.codeit.sb06.team03.mopl.account.domain.vo.Password;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +20,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.AccountRegisteredEvent;
-import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.PasswordResetedEvent;
 import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.RoleUpdatedEvent;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -75,10 +78,20 @@ public class Account extends AbstractAggregateRoot<Account> {
         return this;
     }
 
-    public Account passwordReset(Password tempPassword, Instant expiresAt) {
-        this.passwordReset = PasswordReset.create(this, tempPassword, expiresAt);
-        String rawTempPassword = tempPassword.rawValue();
-        this.registerEvent(new PasswordResetedEvent(emailAddress.value(), rawTempPassword, expiresAt.toString()));
+    public Account passwordReset(
+            TempPasswordGenerationPolicy tempPasswordGenerationPolicy,
+            TempPasswordResetTimeoutPolicy tempPasswordResetTimeoutPolicy,
+            PasswordEncryptionPolicy passwordEncryptionPolicy
+    ) {
+        final String rawTempPassword = tempPasswordGenerationPolicy.generate(); // temporary1!!
+        final Instant expiresAt = tempPasswordResetTimeoutPolicy.createExpiresAt();
+
+        Password encrypted = passwordEncryptionPolicy.apply(rawTempPassword);
+
+        this.passwordReset = PasswordReset.create(this, encrypted, expiresAt);
+        this.registerEvent(new AccountEvent.PasswordResetedEvent(
+                emailAddress.value(), rawTempPassword, expiresAt.toString()
+        ));
         return this;
     }
 }
