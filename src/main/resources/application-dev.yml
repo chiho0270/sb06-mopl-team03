@@ -6,3 +6,4 @@ spring:
 mopl:
   account:
     password-policy: "no"
+    temp-password-policy: "random"
