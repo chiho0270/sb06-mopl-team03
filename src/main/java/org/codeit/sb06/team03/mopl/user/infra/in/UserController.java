@@ -18,7 +18,7 @@ public class UserController implements UserApi {
     @PostMapping
     public ResponseEntity<UserDto> postUsers(@RequestBody UserCreateRequest request) {
         UserDto response = bffUserService.registerAccount(request);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
@@ -36,5 +36,12 @@ public class UserController implements UserApi {
     ) {
         bffUserService.assignUserRole(userId, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Override
+    @GetMapping
+    public ResponseEntity<CursorResponseUserDto> getUsers(@ModelAttribute CursorRequestUserDto request) {
+        CursorResponseUserDto response = bffUserService.getUsers(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
