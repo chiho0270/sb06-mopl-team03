@@ -8,4 +8,7 @@ public abstract sealed class AccountEvent {
 
     public static final class AccountRegisteredEvent extends AccountEvent {
     }
+
+    public static final class PasswordResetedEvent extends AccountEvent {
+    }
 }

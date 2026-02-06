@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.AccountRegisteredEvent;
+import static org.codeit.sb06.team03.mopl.account.domain.event.AccountEvent.PasswordResetedEvent;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -67,6 +68,7 @@ public class Account extends AbstractAggregateRoot<Account> {
 
     public Account passwordReset(Password tempPassword) {
         this.passwordReset = PasswordReset.create(this, tempPassword);
+        this.registerEvent(new PasswordResetedEvent());
         return this;
     }
 }
