@@ -3,11 +3,13 @@ package org.codeit.sb06.team03.mopl.email.application;
 import lombok.RequiredArgsConstructor;
 import org.codeit.sb06.team03.mopl.email.application.in.SendEmailCommand;
 import org.codeit.sb06.team03.mopl.email.application.in.SendEmailUseCase;
-import org.codeit.sb06.team03.mopl.email.domain.EmailDomain;
+import org.codeit.sb06.team03.mopl.email.domain.Email;
 import org.codeit.sb06.team03.mopl.email.domain.EmailService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @RequiredArgsConstructor
 @Service
@@ -19,13 +21,13 @@ public class EmailAppService implements SendEmailUseCase {
 
     @Override
     @Transactional
-    public void send(SendEmailCommand command) {
-        final String email = command.email();
+    public void sendEmail(SendEmailCommand command) {
+        final String emailAddress = command.emailAddress();
         final String rawTempPassword = command.rawTempPassword();
-        final String expireDate = command.expireDate();
+        final Instant expireDate = command.expireDate();
 
-        EmailDomain emailDomain = emailService.send(email, rawTempPassword, expireDate);
-        applicationEventPublisher.publishEvent(emailDomain.event());
-        emailDomain.clearEvents();
+        Email email = emailService.send(emailAddress, rawTempPassword, expireDate);
+        // TODO : 이벤트
+        // 이메일은 applicaion out이 없음
     }
 }

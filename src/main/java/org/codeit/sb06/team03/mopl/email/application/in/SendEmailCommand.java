@@ -1,8 +1,10 @@
 package org.codeit.sb06.team03.mopl.email.application.in;
 
+import java.time.Instant;
+
 public record SendEmailCommand(
-        String to,
+        String emailAddress,
         String rawTempPassword,
-        String expireDate
+        Instant expireDate
 ){
 }
